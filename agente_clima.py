@@ -3,6 +3,7 @@ from langchain.agents import create_agent
 
 class AgenteClima:
   def __init__(self, model):
+    # self.obtener_clima_tool = tool("obtener_clima")(self.obtener_clima)
     self.agent = create_agent(
       model=model,
       tools=[self.obtener_clima],
@@ -14,18 +15,18 @@ class AgenteClima:
       )
     )
 
-  @tool("obtener_clima")
-  def obtener_clima(self, ciudad: str):
+  @tool
+  def obtener_clima(ciudad: str):
     """Obtiene el clima actual de una ciudad"""
     print(f"Obteniendo el clima de {ciudad}...")
 
     data = {
-      "Madrid": "Soleado, 25°C",
-      "Barcelona": "Nublado, 22°C",
-      "Valencia": "Lluvioso, 18°C"
+      "madrid": "Soleado, 25°C",
+      "barcelona": "Nublado, 22°C",
+      "valencia": "Lluvioso, 18°C"
     }
 
-    return data.get(ciudad.lower(), "Ciudad no encontrada")
+    return data.get(ciudad.strip().lower(), "Ciudad no encontrada")
   
   def procesar(self, input):
     res = self.agent.invoke(

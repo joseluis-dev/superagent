@@ -3,6 +3,7 @@ from langchain.agents import create_agent
 
 class AgenteCalendario:
   def __init__(self, model):
+    # self.revisar_disponibilidad_tool = tool("revisar_disponibilidad")(self.revisar_disponibilidad)
     self.agent = create_agent(
       model=model,
       tools=[self.revisar_disponibilidad],
@@ -14,18 +15,12 @@ class AgenteCalendario:
       )
     )
 
-  @tool("revisar_disponibilidad")
-  def revisar_disponibilidad(self, fecha: str):
+  @tool
+  def revisar_disponibilidad(fecha: str):
     """Obtiene eventos de una fecha"""
     print(f"Obteniendo eventos de {fecha}...")
 
-    data = {
-      "2024-06-01": "Reunión de equipo a las 10:00",
-      "2024-06-02": "Entrega de proyecto",
-      "2024-06-03": "Día libre"
-    }
-
-    return data.get(fecha, "No se encontraron eventos para esta fecha")
+    return "No hay eventos programados para esta fecha"
   
   def procesar(self, input):
     res = self.agent.invoke(
